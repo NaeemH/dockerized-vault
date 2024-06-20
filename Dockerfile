@@ -1,7 +1,7 @@
 # Use the official Vault image from HashiCorp
 FROM vault:latest
 
-Dockerfile# Expose the Vault HTTP port
+# Expose the Vault HTTP port
 EXPOSE 8200
 
 # Define environment variables
