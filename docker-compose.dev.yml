@@ -9,13 +9,13 @@ services:
       - "8201:8201"
     environment:
       VAULT_ADDR: 'https://0.0.0.0:8201'
-      VAULT_SKIP_VERIFY: 'true'  # Disable TLS certificate verification
+      VAULT_SKIP_VERIFY: 'true'
       VAULT_LOCAL_CONFIG: |
         {
           "listener": [{
             "tcp": {
               "address": "0.0.0.0:8201",
-              "tls_disable": true  # Disable TLS completely for dev mode
+              "tls_disable": true
             }
           }],
           "default_lease_ttl": "168h",
