@@ -26,6 +26,18 @@ Vault is SaaS that manages secrets storage at scale. It benefits from several la
 
 # Setting up Vault with Docker Compose
 
+## Setup the volume
+```bash
+$ docker volume create vault-volume
+$ docker run -v vault-volume:/data --name helper busybox true
+$ docker cp ./vault-volume helper:/data
+$ docker rm helper
+
+$ docker volume ls
+DRIVER    VOLUME NAME
+local     vault-volume
+```
+
 ## Build and start the Vault container using the provided Docker Compose file
 ```bash
 $ docker compose -f docker-compose.dev.yml up -d --build
