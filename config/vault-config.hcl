@@ -1,12 +1,13 @@
-# Full configuration options can be found at https://www.vaultproject.io/docs/configuration
-
-listener "tcp" {
-  address = "0.0.0.0:8200"
-  tls_disable = 1
-}
-
-storage "file" {
-  path = "/vault/data"
-}
-
+// Enable UI
 ui = true
+
+// Filesystem storage
+storage "file" {
+  path = "./vault-volume"
+}
+
+// TCP Listener
+listener "tcp" {
+  address = "0.0.0.0:8201"
+  tls_disable = "true"
+}

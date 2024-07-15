@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  vault:
+    image: hashicorp/vault:latest
+    container_name: vault-dev
+    restart: on-failure:10
+    ports:
+      - "8201:8201"
+    environment:
+      VAULT_ADDR: 'https://0.0.0.0:8201'
+      VAULT_SKIP_VERIFY: 'true'  # Disable TLS certificate verification
+      VAULT_LOCAL_CONFIG: |
+        {
+          "listener": [{
+            "tcp": {
+              "address": "0.0.0.0:8201",
+              "tls_disable": true  # Disable TLS completely for dev mode
+            }
+          }],
+          "default_lease_ttl": "168h",
+          "max_lease_ttl": "720h",
+          "ui": true,
+          "storage": {
+            "file": {
+              "path": "/vault/data"
+            }
+          }
+        }
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ~/vault/certs:/data/certs
+      - ~/vault/vault-volume:/vault/data
+    healthcheck:
+      retries: 5
+    command: server -dev

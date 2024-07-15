@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  vault:
+    image: hashicorp/vault:latest
+    container_name: vault-dev
+    restart: on-failure:10
+    ports:
+      - "8201:8201"
+    environment:
+      VAULT_ADDR: 'https://0.0.0.0:8201'
+      VAULT_LOCAL_CONFIG: |
+        {
+          "listener": [{
+            "tcp": {
+              "address": "0.0.0.0:8201",
+              "tls_cert_file": "/data/certs/certificate.pem",
+              "tls_key_file": "/data/certs/key.pem",
+              "tls_client_ca_file": "/data/certs/ca.pem"
+            }
+          }],
+          "default_lease_ttl": "168h",
+          "max_lease_ttl": "720h",
+          "ui": true,
+          "storage": {
+            "file": {
+              "path": "/vault/data"
+            }
+          }
+        }
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ~/vault/certs:/data/certs
+      - ~/vault/vault-volume:/vault/data
+    healthcheck:
+      retries: 5
+    command: server
