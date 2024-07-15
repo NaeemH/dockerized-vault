@@ -1,3 +1,29 @@
+# Intro
+This guide contains the requirements and basic config setups for a dockerized vault server. This can be run in a production or a development environment.
+
+# How it Works
+Vault is SaaS that manages secrets storage at scale. It benefits from several layers of security, and strategically places its vulnerabilities at the beginning of it's life-cycle - usually before any production secrets are placed in a vault server
+
+## Init
+- When Vault is first initialized, it generates a Master Key which is divided into multiple parts (usually 3-5 key shares)
+- A specified number of these key shares (threshold) are required to reconstruct the master key.
+- Vault can be configured to automatically seal itself under certain conditions
+    - Too many incorrect authentication attempts
+    - Manually by an operator
+- When sealed, Vault encrypts its data using a seal wrapping key, making the data inaccessible
+
+## Unsealing
+- To reconstruct the Master Key, operators must provide a predetermined number of key shares (i.e. 3/5 or 2/3)
+- Once the threshold is reached, Vault decrypts its data and becomes operational.
+
+## In Operation
+- Data in transit and at rest within Vault is protected using encryption methods specified during configuration
+- Vault enforces strict access controls based on policies and tokens
+- Users and applications must authenticate and be authorized before accessing secrets stored in Vault
+- Audit logging can be configured
+    - Tracks all access / modification attempts
+- Vault can also dynamically generate secrets with a time-to-live (TTL)
+
 # Setting up Vault with Docker Compose
 
 ## Build and start the Vault container using the provided Docker Compose file (You may see a warning regarding the version being obsolete, which can be ignored.)
@@ -83,7 +109,7 @@ destroyed          false
 version            1
 ```
 
-## Test getting vault secrets
+## Test retrieving vault secrets
 ```bash
 $ vault kv get -field=username secret/test-secret
 test
@@ -97,3 +123,8 @@ WARN[0000] /Users/nemo/vault/docker-compose.dev.yml: `version` is obsolete
  ✔ Container vault-dev    Removed                                                                                               0.1s
  ✔ Network vault_default  Removed
 ```
+
+# References:
+- <https://gist.github.com/Mishco/b47b341f852c5934cf736870f0b5da81>
+- <https://github.com/hashicorp/docker-vault>
+- <https://developer.hashicorp.com/vault/>
