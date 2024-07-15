@@ -1,0 +1,20 @@
+[req]
+distinguished_name = req_distinguished_name
+x509_extensions = v3_ca
+req_extensions = req_ext
+prompt = no
+
+[req_distinguished_name]
+CN = localhost
+
+[req_ext]
+subjectAltName = @alt_names
+
+[alt_names]
+IP.1 = 127.0.0.1
+IP.2 = 0.0.0.0
+
+[v3_ca]
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints = CA:TRUE
