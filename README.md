@@ -26,7 +26,7 @@ Vault is SaaS that manages secrets storage at scale. It benefits from several la
 
 # Setting up Vault with Docker Compose
 
-## Build and start the Vault container using the provided Docker Compose file (You may see a warning regarding the version being obsolete, which can be ignored.)
+## Build and start the Vault container using the provided Docker Compose file
 ```bash
 $ docker compose -f docker-compose.dev.yml up -d --build
 WARN[0000] /Users/nemo/vault/docker-compose.dev.yml: `version` is obsolete
